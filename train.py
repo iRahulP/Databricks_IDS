@@ -3,7 +3,6 @@ import warnings
 import sys
 
 import pandas as pd
-import seaborn as sns
 import re
 import time
 import numpy as np
@@ -55,7 +54,7 @@ if __name__ == "__main__":
     y = Train.loc[:,'Label']
 
     # create train and test data
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
 
     # Feature Scaling
     sc = StandardScaler()
