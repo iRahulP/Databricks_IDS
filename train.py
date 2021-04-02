@@ -22,7 +22,6 @@ import mlflow.sklearn
 
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
-    np.random.seed(40)
 
     # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
     ids_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "IDS_train.csv")
@@ -63,13 +62,11 @@ if __name__ == "__main__":
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
 
-    estimators = int(sys.argv[1])    
-    #estimators = 10    
-    
+    n_estimators = int(sys.argv[1])    
 
     with mlflow.start_run():
         # train and predict
-        lr = RandomForestClassifier(n_estimators = estimators)
+        lr = RandomForestClassifier(n_estimators=n_estimators)
         lr.fit(X_train, y_train)
         y_pred = lr.predict(X_test)
 
@@ -78,14 +75,23 @@ if __name__ == "__main__":
         acc = accuracy_score(y_test, y_pred)
         precision = precision_score(y_test, y_pred)
         conf_matrix = confusion_matrix(y_test,y_pred)
+        rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+        mae = mean_absolute_error(y_test, y_pred)
+        r2 = r2_score(y_test, y_pred)
+    
         
-        print("Random Forest Classifier model (n_estimators=%d):" % (estimators))
+        print("Random Forest Classifier model (n_estimators=%d):" % (n_estimators))
         print("  accuracy: %s" % acc)
         print("  precision: %s" % precision)
         print("  confusion_matrix: %s" % conf_matrix)
+        print("  RMSE: %s" % rmse)
+        print("  MAE: %s" % mae)
+        print("  R2: %s" % r2)
         
-        # mlflow.log_metric("accuracy_score: %s" % acc)
-        # mlflow.log_metric("precision: %s" % precision)
-        # mlflow.log_metric("confusion_matrix: %s" % conf_matrix)
+        mlflow.log_metric("accuracy_score", acc)
+        mlflow.log_metric("precision", precision)
+        mlflow.log_metric("rmse", rmse)
+        mlflow.log_metric("r2", r2)
+        mlflow.log_metric("mae", mae)
         
         mlflow.sklearn.log_model(lr, "model")
