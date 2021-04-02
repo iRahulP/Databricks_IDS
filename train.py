@@ -63,8 +63,8 @@ if __name__ == "__main__":
     X_train = sc.fit_transform(X_train)
     X_test = sc.transform(X_test)
 
-    #estimators = int(sys.argv[1])    
-    estimators = 10    
+    estimators = int(sys.argv[1])    
+    #estimators = 10    
     
 
     with mlflow.start_run():
