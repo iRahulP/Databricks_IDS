@@ -22,7 +22,7 @@ import mlflow.sklearn
 if __name__ == "__main__":
     warnings.filterwarnings("ignore")
 
-    # Read the wine-quality csv file (make sure you're running this from the root of MLflow!)
+    # Read the ids csv file (make sure you're running this from the root of MLflow!)
     ids_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "IDS_train.csv")
     data = pd.read_csv(ids_path)
 
